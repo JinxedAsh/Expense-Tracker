@@ -50,7 +50,7 @@ A Java Swing-based desktop application for managing personal finances, tracking 
 - SQLite JDBC Driver
 - Swing GUI Framework
 
-###Database Schema
+### Database Schema
 
 The application uses SQLite with the following tables:
 
@@ -80,3 +80,9 @@ The application uses SQLite with the following tables:
         - Reset data if needed
         - Regular auto-refresh of displayed information
 
+## Acknowledgments
+
+
+    - SQLite for database management
+    - Java Swing for GUI components
+    - Contributors and testers
