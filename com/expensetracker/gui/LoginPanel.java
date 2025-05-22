@@ -4,10 +4,8 @@ import com.expensetracker.Main;
 import com.expensetracker.MainFrame;
 import com.expensetracker.database.DatabaseManager;
 import com.expensetracker.models.User;
-
-import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import javax.swing.*;
 
 public class LoginPanel extends JPanel {
     private MainFrame mainFrame;
@@ -30,7 +28,7 @@ public class LoginPanel extends JPanel {
         gbc.insets = new Insets(5, 5, 5, 5);
 
         // Title
-        JLabel titleLabel = new JLabel("Personal Finance Tracker");
+        JLabel titleLabel = new JLabel("Personal Expense Tracker");
         titleLabel.setFont(new Font("Arial", Font.BOLD, 24));
         gbc.gridx = 0;
         gbc.gridy = 0;

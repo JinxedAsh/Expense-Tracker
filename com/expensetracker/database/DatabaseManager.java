@@ -1,11 +1,10 @@
 package com.expensetracker.database;
 
 import com.expensetracker.models.*;
-
-import javax.swing.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import javax.swing.*;
 
 public class DatabaseManager {
     private static final String DB_URL = "jdbc:sqlite:finance_tracker.db";
@@ -322,6 +321,7 @@ public class DatabaseManager {
             return false;
         }
     }
+
     public boolean updateUserBudget(int userId, double budget) {
         String sql = "UPDATE users SET monthly_budget = ? WHERE id = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {

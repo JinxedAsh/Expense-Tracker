@@ -4,16 +4,19 @@ import com.expensetracker.Main;
 import com.expensetracker.MainFrame;
 import com.expensetracker.database.DatabaseManager;
 import com.expensetracker.models.User;
-
-import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
 import java.io.*;
 import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import javax.swing.*;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
+ //Panel displaying user's financial overview including balance, income, expenses, savings, and budget information. 
+ //Provides functionality for data export and management.
 
 public class DetailsPanel extends JPanel {
+     // UI Components
     private JLabel nameLabel;
     private JLabel balanceLabel;
     private JLabel incomeLabel;
@@ -25,6 +28,8 @@ public class DetailsPanel extends JPanel {
     private JButton exportButton;
     private JButton refreshButton;
     private JButton setBudgetButton;
+
+    // Data management
     private DatabaseManager dbManager;
     private User currentUser;
     private JLabel currentDateTimeLabel;
@@ -38,6 +43,7 @@ public class DetailsPanel extends JPanel {
         startTimeUpdater();
     }
 
+    //Initializes and arranges all UI components in the panel including summary information labels and action buttons.
     private void initializeComponents() {
         JPanel summaryPanel = new JPanel(new GridBagLayout());
         GridBagConstraints gbc = new GridBagConstraints();
@@ -107,6 +113,7 @@ public class DetailsPanel extends JPanel {
         setBudgetButton.addActionListener(e -> showSetBudgetDialog());
     }
 
+    //Opens a dialog for setting monthly budget with real-time validation and database updates.
     private void showSetBudgetDialog() {
         JDialog dialog = new JDialog((Frame)SwingUtilities.getWindowAncestor(this), "Set Monthly Budget", true);
         dialog.setLayout(new GridBagLayout());
@@ -186,7 +193,9 @@ public class DetailsPanel extends JPanel {
         this.currentUser = user;
         refreshData();
     }
-
+    
+    //Calculates total income for the specified month from transactions table.
+    //Returns total income for the month
     private double calculateMonthlyIncome(int userId, String month) throws SQLException {
         String sql = """
             SELECT COALESCE(SUM(amount), 0.0) as total 
@@ -204,6 +213,8 @@ public class DetailsPanel extends JPanel {
         }
     }
 
+    //Calculates total expenses including both regular expenses and paid bills for the specified month.
+    //Returns combined total of expenses and paid bills
     private double calculateMonthlyExpenses(int userId, String month) throws SQLException {
         // First, get regular expenses
         String expenseSql = """
@@ -242,6 +253,9 @@ public class DetailsPanel extends JPanel {
 
         return totalExpenses;
     }
+
+    //Updates all financial information displayed in the panel.
+    //Calculates current month's income, expenses, and savings using background processing to prevent UI freezing.
     public void refreshData() {
         if (currentUser == null) return;
 
@@ -334,6 +348,7 @@ public class DetailsPanel extends JPanel {
         }
     }
 
+    //Calculates savings from the previous month by finding the difference between income and expenses.
     private double getPreviousMonthSavings(int userId) throws SQLException {
         String previousMonth = LocalDateTime.now()
                 .minusMonths(1)
@@ -402,6 +417,9 @@ public class DetailsPanel extends JPanel {
             }
         }
     }
+
+    //Resets all user-related data including transactions, bills, and budget.
+    //This operation cannot be undone.
     private void resetUserData(int userId) throws SQLException {
         // Delete all user-related data
         String[] tables = {"transactions", "bills", "budgets"};
@@ -421,6 +439,8 @@ public class DetailsPanel extends JPanel {
         }
     }
 
+    //Handles the export of financial data to CSV format.
+    //Allows user to choose save location and generates detailed transaction report.
     private void handleExport() {
         JFileChooser fileChooser = new JFileChooser();
         fileChooser.setDialogTitle("Export Financial Data");
